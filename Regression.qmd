@@ -1,0 +1,110 @@
+---
+title: ""
+author: "Tykera Goins"
+format: pdf
+execute: 
+  echo: false
+  warning: false
+  message: false
+editor: source
+---
+
+```{r}
+library(tidyverse)
+
+crime <- read_csv("crime.csv")
+```
+
+```{=tex}
+\begin {minipage} {0.3 \textwidth}
+\includegraphics[width=1.8in]{city.png}
+\end{minipage}
+\begin{minipage} {0.7\textwidth}
+City Overview \\
+2024 Public Admin Drive \\
+Atlanta, Georgia 30322 \\
+Phone: (404) 712 6308 \\
+Email: cityoverview@publicadmin.org
+\end{minipage}
+```
+### Crime Rates and Public Safety Spending
+
+```{r}
+#| fig-align: "center"
+
+
+ggplot(crime, aes(spending, crime)) +
+  geom_point(color = "black") +
+  labs(title = "Scatterplot: Public Safety Spending and Crime Rates", 
+       x = "Public Safety Spending (in million dollars)",
+y = "Crime Rate (per 1,000 residents)") +
+  theme_light() +
+  theme(text = element_text(size = 8, family = "serif"))
+```
+
+```{r}
+model1 <- lm(crime~spending, crime)
+
+intercept <- coef(model1)
+slope <- coef(model1)
+r_squared <- summary(model1)$r.squared
+```
+
+A basic regression was conducted and the crime rate coefficient indicates that for every million dollar spent on public safety, the crime rate increases by an average of `r round(slope, 2)` per 1,000 residents. This result is statistically significant. The R squared value suggests that approximately `r round(r_squared * 100, 2)` % of the variability in crime rays can be explained by the amount of public safety spending.
+
+```{r}
+park <- read_csv("park.csv")
+```
+
+### Park Area Satisfaction
+
+```{r}
+
+ggplot(park, aes(area, satisfaction)) +
+  geom_point(color = "black") +
+  labs(title = "Scatterplot: Resident Satisfaction on Park Areas", 
+       x = "Park Area (in acres)",
+y = "Resident Satisfaction (survey score)") +
+  theme_light() +
+  theme(text = element_text(size = 8, family = "serif"))
+```
+
+```{r}
+model2 <- lm(satisfaction~area, park)
+
+intercept <- coef(model2)
+slope <- coef(model2)
+r_squared <- summary(model2)$r.squared
+```
+
+A basic regression was conducted and the resident satisfaction coefficient to the park area has an average of `r round(slope, 2)` of a survey score. This result is not statistically significant. The R squared value suggests that approximately `r round(r_squared * 100, 2)` % of the variability in resident satisfaction cannot be explained by the park area acreage.
+
+```{r}
+
+traffic <- read.csv("traffic.csv")
+```
+
+### Traffic Congestion Air Quality Index
+
+```{r}
+#| fig-pos: h
+ggplot(traffic, aes(traffic, aqi)) +
+  geom_point(color = "black") +
+  labs(title = "Scatterplot: Traffic Congestion AQI", 
+       x = "Traffic Congestion (in average daily hrs)",
+y = "Air Quality Index") +
+  theme_light() +
+  theme(text = element_text(size = 8, family = "serif"))
+```
+
+```{r}
+model3 <- lm(aqi~traffic, traffic)
+
+intercept <- coef(model3)
+slope <- coef(model3)
+r_squared <- summary(model3)$r.squared
+```
+
+A basic regression was conducted and the AQI coefficient indicates that for every daily hour in traffic congestion, the air quality index decreases by an average of `r round(slope, 2)`. This result is statistically significant. The R squared value suggests that approximately `r round(r_squared * 100, 2)` % of the variability in poor air quality can be explained by the average daily hours spent in traffic congestion.
+
+#thank you
