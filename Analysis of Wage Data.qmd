@@ -1,0 +1,102 @@
+---
+title: "Analysis of Wage Data"
+author: "Tykera Goins"
+format: html
+editor: visual
+---
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+library(tidyverse)
+
+data <- read_csv("wage.csv") |> 
+  summarize(avgwage = mean(wage),
+            .by = year) |> 
+  mutate(avgwage = avgwage/100)
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+ggplot(data,aes(x = year , y = avgwage)) +
+  geom_line() +
+  labs(x = "Year" ,
+       y = "Wage (in dollars)" ,
+       title = "Average Wage over Time") +
+  theme_light()
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+cleandata <- read_csv("wage.csv") |> 
+  mutate(wage = round(wage/100, 2)) |> 
+  filter(wage <= 50) |> 
+  drop_na()
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(cleandata, aes(educ)) +
+  geom_bar() + 
+    labs(x = "Education Level" , 
+       y = "Population" , 
+       title = "Different Education Levels")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(cleandata, aes(educ , wage)) +
+  geom_boxplot() +
+  labs(x = "Education Level" , 
+       y = "Wages" , 
+       title = "Education Wages")
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(cleandata, aes(wage)) +
+  geom_histogram() +
+  labs(x = "Wage" , 
+       y = "Population" , 
+       title = "Wage Distribution" )
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(cleandata, aes(wage)) +
+  geom_histogram() +
+  labs(x = "Wage" , 
+       y = "Population" , 
+       title = "Education Wage Distribution") +
+  facet_wrap(~educ)
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+ggplot(cleandata, aes(wage, fill = educ)) +
+  labs(title = "Education Wage Density") +
+  geom_density()
+```
+
+# I like Quarto
