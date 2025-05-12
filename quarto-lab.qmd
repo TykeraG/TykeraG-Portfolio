@@ -1,0 +1,121 @@
+---
+title: "T Tests"
+format: html
+author: "Tykera Goins"
+---
+
+```{r}
+#| warning: false
+#| echo: false
+
+library(tidyverse)
+
+RefuseCollection <- read_csv("trash_collection.csv")
+
+```
+
+The visualization below shows the comparison of September refuse collection for Hahira, and Lakepark, two cities in Lowndes County Georgia. The boxplots in the graph do not look the same and do not appear to have equal variances making it heterogeneity.
+
+```{r}
+#| warning: false
+#| echo: false
+
+boxplot(RefuseCollection$hahira, RefuseCollection$lakepark,
+        names = c("Hahira", "Lakepark"),
+        main = ("September Refuse Collection"),
+        xlab = ("City"),
+        ylab = ("Measurement (in thoudands)"))
+```
+
+The assumption that the variances are different for refuse collection in Hahira and Lakepark is tested below. The result of the two sample test confirms that variances are different with the p-value being below 0.05. This shows a statistically significance difference and a 95% confidence interval that the mean difference of the two cities' refuse collection is not to equal zero.
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+t.test(RefuseCollection$hahira , RefuseCollection$lakepark)
+```
+```{r}
+#| warning: false
+#| echo: false
+
+
+wastewater <- read_csv("waste_water.csv")
+```
+
+
+
+
+The visualization below shows the comparison of waste water management before and after a treatment process in Lowndes County Georgia. The boxplots in the graph do not look the same and do not appear to have equal variances making it heterogeneity.
+
+
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+boxplot(wastewater,
+        main = ("Waste Water Measurements"),
+        xlab = ("Treatment Process"),
+        ylab = ("Measurement (in mg/L"))
+```
+
+
+
+
+The assumption that the variances of waste water management are similar before and after the county implemented the treatment process is tested below. The result of the paired t-test confirms that the variances are different. With the p-value being below 0.05, it shows a statistically significance difference and a 95% confidence interval that the mean difference between the before and after treatment process is five. Proving improvement in water waste management after the treatment process was put in place.
+
+
+
+
+```{r}
+#| warning: false
+#| echo: false
+
+t.test(wastewater$before, wastewater$after, paired = TRUE)
+```
+
+
+```{r}
+#| warning: false
+#| echo: false
+
+trafficdata <- read_csv("traffic.csv")
+```
+
+
+
+
+
+The histogram below visually shows the distribution of the average number of vehicles passing a checkpoint per hour. The histogram is shown as not normally distributed with a slight positive skewness.
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+ggplot(trafficdata, aes(trafficdata$vehicles)) +
+  geom_histogram(bins = 10, color = "white") +
+  labs(title = "Vehicle Checkpoints" , 
+       x = "Average Number of Vehicles")
+```
+
+
+The data was tested to see if Lowndes County had at least an average number of 180 vehicles pass through a checkpoint per hour. The test below confirms there is a statistically significance difference in the average number of vehicles that passed a checkpoint per hour than 180. With the p-value being below 0.05, there is a 95% confidence interval that the average number of vehicles that pass a checkpoint per hour is 198. Thus, Lowndes County surpasses the minimum average number of vehicles needed to apply for funding from the state of Georgia.
+
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+t.test(trafficdata$vehicles, mu = 180)
+
+```
+
+
+
+
+#Thank you
