@@ -1,0 +1,102 @@
+---
+title: "ANOVA"
+author: "Tykera Goins"
+format: html
+editor: visual
+execute:
+  warning: false
+  message: false
+  echo: false
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+training <- read_csv("training.csv")
+```
+
+# Training Type and Performance Score Analysis
+
+```{r}
+ggplot(training, aes(training_type , performance_score)) +
+  geom_boxplot() +
+  labs(title = "Training Performance", 
+       x = "Training Type",
+       y = "Performance Score") +
+  theme_light()
+```
+
+#### One Way ANOVA
+
+HO: There are no differences between the means of the training type and performance score groups.
+
+HA: There is at least one difference between the means of the training type and performance score groups.
+
+```{r}
+
+OWtraining <- aov(performance_score ~ training_type, training)
+summary(OWtraining)
+```
+
+My interpretation following the one way ANOVA testing is there is at least one difference in means between the training type and performance score groups.
+
+#### Two Way ANOVA
+
+HO: There are no differences between the means of the training type and performance score groups when the experience level is considered.
+
+HA: There is at least one difference between the means of the training type and performance score groups when the experience level is considered.
+
+```{r}
+
+TWtraining <- aov(performance_score ~ training_type * experience_level, training)
+summary(TWtraining)
+```
+
+My interpretation following the two way ANOVA testing is there is at least one difference in means between the training type and performance score groups when experience level is considered.
+
+```{r}
+satisfaction <- read_csv("satisfaction.csv")
+```
+
+# Service and Satisfaction Score Analysis
+
+```{r}
+
+ggplot(satisfaction, aes(service_type , satisfaction_score)) +
+  geom_boxplot() +
+  labs(title = "Service Satisfaction",
+       x = "Service",
+       y = "Satisfaction Score") +
+  theme_light()
+```
+
+#### One Way ANOVA
+
+HO: There are no means difference between the service type and satisfaction score groups
+
+HA: There is at least one difference in means between the service type and satisfaction score groups
+
+```{r}
+OWsatisfaction <- aov(satisfaction_score ~ service_type, satisfaction)
+summary(OWsatisfaction)
+```
+
+My interpretation following the one way ANOVA testing, is there is at least one difference in means between the performance score and service type groups.
+
+#### Two Way ANOVA
+
+HO: There are no means difference between the service type and satisfaction score groups when the region is considered.
+
+HA: There is at least one difference in means between the service type and satisfaction score groups when the region is considered.
+
+```{r}
+
+TWsatisfaction <- aov(satisfaction_score ~ service_type * region, satisfaction )
+summary(TWsatisfaction)
+```
+
+My interpretation following the two way ANOVA testing is there is at least one difference in means between the performance score and service type groups when the region is considered.
+
+#Thank you
